@@ -118,4 +118,38 @@ def check_12():
     subarray2[0,1]=10
     print(subarray2)
     print(c2)     #changing subarray changes the original array
-check_12()
+#check_12()
+wines=np.genfromtxt(r"C:\Users\THINKPAD\Downloads\winequality-red.csv",delimiter=";",skip_header=1)
+#np.set_printoptions(threshold=np.inf)   # to see full data
+
+def check_13():
+    print(wines)
+    print(wines[0, :2])
+
+    print(wines[:, :1])
+    print(wines[:, 1:4])
+    print(wines[:, -3])
+    print(wines[:, [0, 2, 4]])
+    print(wines[[0, 2, 4], :])
+    print(wines[:, -3].mean())
+    print(wines[:, 3].mean())
+
+graduate_admission = np.genfromtxt(r"C:\Users\THINKPAD\Downloads\Admission_Predict.csv",dtype=None, delimiter=',', skip_header=1,names=('Serial No','GRE Score', 'TOEFL Score', 'University Rating', 'SOP',
+                                          'LOR','CGPA','Research', 'Chance of Admit'))
+#using "dtype=None" creates structured array(tuple rows)
+#print(wines)
+def check_14():
+    print(graduate_admission)
+    print(graduate_admission.shape)
+    print(graduate_admission["CGPA"][:4])
+    graduate_admission["CGPA"] = (graduate_admission["CGPA"] / 10) * 4  # changes the data, changes CGPA into out of 4
+    print(graduate_admission["CGPA"])
+    print(graduate_admission)   #data is changed
+    print(graduate_admission[graduate_admission["Research"]==1])  # sorting the students how have research
+    print(len(graduate_admission[graduate_admission["Research"]==1]))
+    print(graduate_admission[graduate_admission["Chance_of_Admit"] > 0.8])
+    # dtype=None changes the space into "_", so we need to write this
+    print(graduate_admission["GRE_Score"].mean())
+    print(graduate_admission[graduate_admission["Chance_of_Admit"]<0.4]["GRE_Score"].mean())
+    print(graduate_admission[graduate_admission["Chance_of_Admit"]<0.8]["CGPA"].mean())
+    print(graduate_admission[graduate_admission["Chance_of_Admit"]<0.4]["CGPA"].mean())
