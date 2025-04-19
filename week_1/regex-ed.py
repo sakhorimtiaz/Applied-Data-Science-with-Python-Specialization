@@ -59,3 +59,21 @@ def check_7():
         print(re.split(r"[\[]", title))
     for title in re.findall(r"[\w ]*\[edit\]", wiki):
         print(re.split(r"[\[]", title)[0])
+def check_8():
+    print(re.finditer(r"([\w ]*)(\[edit\])", wiki))
+    for items in re.finditer(r"([\w ]*)(\[edit\])", wiki):
+        print(items.groups())
+    for items in re.finditer(r"([\w ]*)(\[edit\])", wiki):
+        print(items.group(0))
+    for items in re.finditer(r"([\w ]*)(\[edit\])", wiki):
+        print(items.group(1))
+    for items in re.finditer(r"([\w ]*)(\[edit\])", wiki):
+        print(items.group(2))
+    for items in re.finditer(r"([\w ]*)(\[)(edit)(\])", wiki):
+        print(items.group(4))
+
+def check_9():
+    for items in re.finditer(r"(?P<title>[\w ]*)(?P<edit_link>\[edit\])", wiki):
+        print(items.groupdict())
+    for items in re.finditer(r"(?P<title>[\w ]*)(?P<edit_link>\[edit\])", wiki):
+        print(items.groupdict()["title"])
