@@ -59,6 +59,7 @@ def check_7():
         print(re.split(r"[\[]", title))
     for title in re.findall(r"[\w ]*\[edit\]", wiki):
         print(re.split(r"[\[]", title)[0])
+#print(re.findall(r"([\w ]*)(\[edit\])",wiki))
 def check_8():
     print(re.finditer(r"([\w ]*)(\[edit\])", wiki))
     for items in re.finditer(r"([\w ]*)(\[edit\])", wiki):
@@ -77,3 +78,31 @@ def check_9():
         print(items.groupdict())
     for items in re.finditer(r"(?P<title>[\w ]*)(?P<edit_link>\[edit\])", wiki):
         print(items.groupdict()["title"])
+
+def check_10():
+    for items in re.finditer(r"(?P<title>[\w ]+)(?=\[edit\])", wiki):
+        print(items)
+    for items in re.finditer(r"(?P<title>[\w ]*)(?=\[edit\])", wiki):
+        print(items.group("title"))
+    for items in re.finditer(r"(?P<title>[\w ]+)(?=\[edit\])", wiki):
+        print(items.group("title"))
+
+
+with open(r"C:\Users\THINKPAD\Downloads\buddhist.txt",encoding="utf-8") as file:
+    buddha=file.read()
+def check_11():
+    # print(buddha)
+    # let's write the pattern separately
+    # pattern=r"(?P<title>.*)(-\ located\ in\ )(?P<city>\w*)(,\ )(?P<city>\w*)"
+    pattern = r"(?P<title>.*?)\s*[-–]\s*located in (?P<city>.*?), (?P<state>[A-Za-z]+)"
+    pattern2 = r"(?P<title>.*?)\s*[-–](\s*located in )(?P<city>.*?), (?P<state>[A-Za-z]+)"
+    for items in re.finditer(pattern, buddha):
+        print(items.groupdict())
+
+with open(r"C:\Users\THINKPAD\Downloads\nytimeshealth.txt",encoding="utf-8") as file:
+    health=file.read()
+def check_12():
+    # print(health)
+    pattern = r"#[\w]*?=\s"
+    for items in re.finditer(pattern, health):
+        print(items)
