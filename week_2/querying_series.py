@@ -25,4 +25,20 @@ def vectorization():
     print(len(numbers))
     print(timeit.timeit(lambda : finding_sum_slow,number=100))
     print(timeit.timeit(lambda : finding_sum_fast, number=100))
-vectorization()
+
+def increase():
+    numbers = pd.Series(np.random.randint(0, 1000, 10000))
+    print(numbers.head())
+    numbers += 2
+    print(numbers.head())
+
+def merging():
+    students_classes = pd.Series({'Alice': 'Physics',
+                                  'Jack': 'Chemistry',
+                                  'Molly': 'English',
+                                  'Sam': 'History'})
+    kelly_classes = pd.Series(['Philosophy', 'Arts', 'Math'], index=['Kelly', 'Kelly', 'Kelly'])
+    all_students_classes=pd.concat([students_classes,kelly_classes])
+    print(all_students_classes)
+    print(students_classes)
+    print(all_students_classes.loc["Kelly"])
