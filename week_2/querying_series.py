@@ -1,3 +1,5 @@
+import pandas as pd
+import numpy as np
 def loc_and_iloc():
     students_classes = {'Alice': 'Physics',
                         'Jack': 'Chemistry',
