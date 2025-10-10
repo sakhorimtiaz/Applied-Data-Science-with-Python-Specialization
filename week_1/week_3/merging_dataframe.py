@@ -52,3 +52,17 @@ def union_intersect_example_3():
                                {'First Name': 'Sally', 'Last Name': 'Brooks',
                                 'School': 'Engineering'}])
     pd.merge(staff_df, student_df, how="inner", on=["First Name", "Last Name"])
+
+def concatenate():
+    df_2013=pd.read_csv(r"C:\Users\THINKPAD\Downloads\MERGED2012_13_PP.csv",on_bad_lines="skip")
+    df_2014=pd.read_csv(r"C:\Users\THINKPAD\Downloads\MERGED2013_14_PP.csv",on_bad_lines="skip")
+    #print(df_2014.head())
+    #print(len(df_2013))
+    #print(len(df_2014))
+    frames=[df_2013,df_2014]
+    c=pd.concat(frames)
+    print(frames)
+    print(c)
+    print(len(df_2013)+len(df_2014))
+    d=pd.concat(frames,keys=["2013","2014"])
+    print(d)
