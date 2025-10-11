@@ -34,3 +34,13 @@ def set_batch_number(item):
 
 for group, frame in df.groupby(set_batch_number):
     print(f'There are {len(frame)} records in group  {group}  for processing.')
+def grouping_fun(item):
+    # Check the "review_scores_value" portion of the index. item is in the format of
+    # (cancellation_policy,review_scores_value
+    if item[1] == 10.0:
+        return (item[0],"10.0")
+    else:
+        return (item[0],"not 10.0")
+
+for group, frame in df.groupby(grouping_fun):
+    print(group)
