@@ -20,3 +20,17 @@ def with_group_by():
         avg=np.average(frame['CENSUS2010POP'])
         #print(f"{group} has an average population of {avg}")
 print(timeit.timeit(with_group_by,number=3))
+
+df = pd.read_csv(r"C:\Users\THINKPAD\Downloads\census.csv")
+df=df.set_index("STNAME")
+
+def set_batch_number(item):
+    if item[0]<"M":
+        return 0
+    if item[0]<"Q":
+        return 1
+    else:
+        return 2
+
+for group, frame in df.groupby(set_batch_number):
+    print(f'There are {len(frame)} records in group  {group}  for processing.')
