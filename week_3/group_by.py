@@ -63,3 +63,4 @@ def transformtion_and_filtering():
     print(df.head())
     df['mean_diff'] = np.absolute(df['review_scores_value'] - df['mean_review_scores'])
     print(df['mean_diff'].head())
+    df.groupby('cancellation_policy').filter(lambda x: np.nanmean(x['review_scores_value']) > 9.2)
