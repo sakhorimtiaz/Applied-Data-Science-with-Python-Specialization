@@ -53,7 +53,7 @@ def aggregation():
         {"review_scores_value": (np.nanmean, np.nanstd), "reviews_per_month": np.nanmean})
     print(df.head())
 
-def transformtion():
+def transformtion_and_filtering():
     df = pd.read_csv(r"C:\Users\THINKPAD\Downloads\listings.csv")
     cols = ["cancellation_policy", "review_scores_value"]
     transform_df = df[cols].groupby("cancellation_policy").transform(np.nanmean)
