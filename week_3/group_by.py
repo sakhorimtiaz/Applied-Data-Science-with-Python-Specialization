@@ -44,3 +44,11 @@ def grouping_fun(item):
 
 for group, frame in df.groupby(grouping_fun):
     print(group)
+
+def aggregation():
+    df = pd.read_csv(r"C:\Users\THINKPAD\Downloads\listings.csv")
+    df = df.reset_index()
+    # df=df.groupby("cancellation_policy").agg({"review_scores_value":np.nanmean})
+    df = df.groupby("cancellation_policy").agg(
+        {"review_scores_value": (np.nanmean, np.nanstd), "reviews_per_month": np.nanmean})
+    print(df.head())
