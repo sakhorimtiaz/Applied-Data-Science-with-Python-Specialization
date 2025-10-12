@@ -64,3 +64,15 @@ def transformtion_and_filtering():
     df['mean_diff'] = np.absolute(df['review_scores_value'] - df['mean_review_scores'])
     print(df['mean_diff'].head())
     df.groupby('cancellation_policy').filter(lambda x: np.nanmean(x['review_scores_value']) > 9.2)
+
+#apply is a slower approach, but great for general approach.
+df = pd.read_csv(r"C:\Users\THINKPAD\Downloads\listings.csv")
+df=df[["cancellation_policy", "review_scores_value"]]
+print(df.head())
+
+def cal_mean_review_scores(group):
+    avg=np.nanmean(group["review_scores_value"])
+    group.loc[:,"review_scores_value"]=np.abs(avg-group["review_scores_value"])
+    return group
+
+print(df.groupby("cancellation_policy").apply(cal_mean_review_scores).head())
