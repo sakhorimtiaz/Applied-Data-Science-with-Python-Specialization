@@ -52,3 +52,14 @@ def aggregation():
     df = df.groupby("cancellation_policy").agg(
         {"review_scores_value": (np.nanmean, np.nanstd), "reviews_per_month": np.nanmean})
     print(df.head())
+
+def transformtion():
+    df = pd.read_csv(r"C:\Users\THINKPAD\Downloads\listings.csv")
+    cols = ["cancellation_policy", "review_scores_value"]
+    transform_df = df[cols].groupby("cancellation_policy").transform(np.nanmean)
+    print(transform_df.head())
+    transform_df.rename({'review_scores_value': 'mean_review_scores'}, axis='columns', inplace=True)
+    df = df.merge(transform_df, left_index=True, right_index=True)
+    print(df.head())
+    df['mean_diff'] = np.absolute(df['review_scores_value'] - df['mean_review_scores'])
+    print(df['mean_diff'].head())
