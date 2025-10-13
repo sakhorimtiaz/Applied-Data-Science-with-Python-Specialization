@@ -29,3 +29,9 @@ def dummy_values():
     print(df)
     dummy_df = pd.get_dummies(df, columns=['Subject'])
     print(dummy_df)
+def bin():
+    df = pd.read_csv(r"C:\Users\THINKPAD\Downloads\census.csv")
+    df = df[df["SUMLEV"] == 50]
+    df = df.set_index("STNAME").groupby(level=0)['CENSUS2010POP'].agg(np.average)
+    print(df.head())
+    print(pd.cut(df, 10))
