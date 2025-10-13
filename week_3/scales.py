@@ -1,3 +1,5 @@
+
+import pandas as pd
 def unordered_category():
     df = pd.DataFrame(['A+', 'A', 'A-', 'B+', 'B', 'B-', 'C+', 'C', 'C-', 'D+', 'D'],
                       index=['excellent', 'excellent', 'excellent', 'good', 'good', 'good',
@@ -18,3 +20,12 @@ def ordered_category():
     grades = df["Grades"].astype(my_categories)
     df = df[df["Grades"] > "C"]
     print(grades.head())
+
+def dummy_values():
+    df = pd.DataFrame({
+        'Name': ['Alice', 'Bob', 'Charlie', 'Diana'],
+        'Subject': ['Math', 'Science', 'Math', 'English']
+    })
+    print(df)
+    dummy_df = pd.get_dummies(df, columns=['Subject'])
+    print(dummy_df)
