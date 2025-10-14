@@ -26,3 +26,21 @@ ts3 = pd.DataFrame(np.random.randint(10, 100, (4,2)), index=d1,
                    columns=list('ab'))
 
 print(pd.to_datetime("4.7.12",dayfirst=True))
+
+def time_delta():
+    t4=pd.Timestamp("9/3/2025")-pd.Timestamp("9/1/2025")
+    print(t4)
+    t5=pd.Timestamp("9/3/2025")+pd.Timedelta("12D 3H")
+    print(t5)
+
+def offsets():
+    t6 = pd.Timestamp("9/3/2025").weekday()
+    print(t6)
+    t7 = pd.Timestamp("9/3/2025") + pd.offsets.Week()
+    print(t7)
+    t8 = pd.Timestamp("9/3/2025") + pd.offsets.MonthEnd()
+    print(t8)
+    t9 = pd.Timestamp("9/3/2025") + pd.offsets.MonthBegin()
+    print(t9)
+    t10 = pd.Timestamp("10/17/2025") + pd.offsets.BusinessDay()
+    print(t10)
