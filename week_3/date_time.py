@@ -44,3 +44,10 @@ def offsets():
     print(t9)
     t10 = pd.Timestamp("10/17/2025") + pd.offsets.BusinessDay()
     print(t10)
+def working_with_dates():
+    dates1=pd.date_range("10/1/2016",periods=9,freq="2W-SUN")
+    #print(dates1)
+    dates2=pd.date_range("10/1/2016",periods=9,freq="B")
+    #print(dates2)
+    dates3 = pd.date_range("10/1/2016", periods=9, freq="QS-JUN")
+    #print(dates3)
