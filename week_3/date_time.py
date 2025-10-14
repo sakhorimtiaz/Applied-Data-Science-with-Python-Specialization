@@ -19,3 +19,10 @@ def date_time_index_period_index():
                                  pd.Period('2016-11')])
     print(t2)
     print(t2.index)
+d1 = ['2 June 2013', 'Aug 29, 2014', '2015-06-26', '7/12/16']
+
+# And just some random data
+ts3 = pd.DataFrame(np.random.randint(10, 100, (4,2)), index=d1,
+                   columns=list('ab'))
+
+print(pd.to_datetime("4.7.12",dayfirst=True))
