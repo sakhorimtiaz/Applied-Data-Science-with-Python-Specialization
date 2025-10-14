@@ -51,3 +51,18 @@ def working_with_dates():
     #print(dates2)
     dates3 = pd.date_range("10/1/2016", periods=9, freq="QS-JUN")
     #print(dates3)
+def example():
+    dates = pd.date_range("10/1/2016", periods=9, freq="2W-SUN")
+    df = pd.DataFrame(
+        {"Count 1": 100 + np.random.randint(-5, 10, 9).cumsum(), "Count 2": 120 + np.random.randint(-5, 10, 9)},
+        index=dates)
+    print(df)
+
+    # print(df.index.weekday)
+    print(df.diff())
+    print(df.resample("ME").mean())
+    print(type(df.index))
+    print(df.loc["2017"])
+    print(df.loc["2016-12"])
+    print(df.loc["2016-12":])
+    print(df.loc["2016"])
