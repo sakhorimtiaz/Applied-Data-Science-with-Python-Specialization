@@ -10,6 +10,7 @@ cities.columns = ['Metropolitan area', 'Population', 'NFL', 'MLB', 'NBA', 'NHL']
 
 nhl_df = pd.read_csv(r"C:\Users\THINKPAD\Downloads\nhl.csv")
 #print(nhl_df.columns)
+nhl_df = nhl_df[nhl_df['year'] == 2018]
 nhl_df=nhl_df[["team","W","L"]]
 #print(nhl_df.head())
 #cleaning non-numeric values
@@ -98,7 +99,7 @@ def nhl_correlation():
     cities = pd.read_html(r"C:\Users\THINKPAD\Downloads\wikipedia_data.html")[1]
     cities = cities.iloc[:-1, [0, 3, 5, 6, 7, 8]]
     cities.columns = ['Metropolitan area', 'Population', 'NFL', 'MLB', 'NBA', 'NHL']
-
+    nhl_df = nhl_df[nhl_df['year'] == 2018]
     # --- Clean and compute win/loss ratio ---
     nhl_df = nhl_df[['team', 'W', 'L']]
     nhl_df['W'] = pd.to_numeric(nhl_df['W'], errors='coerce')
