@@ -486,3 +486,167 @@ def mlb_correlation():
 # --- Call function ---
 corr_result = mlb_correlation()
 print(corr_result)
+
+####Q-4
+##practice:
+import pandas as pd
+import re
+cities = pd.read_html(r"C:\Users\THINKPAD\Downloads\wikipedia_data.html")[1]
+cities=cities.iloc[:-1,[0,3,5,6,7,8]]
+#rename for clarity
+cities.columns = ['Metropolitan area', 'Population', 'NFL', 'MLB', 'NBA', 'NHL']
+#print(cities)
+
+nfl_df = pd.read_csv(r"C:\Users\THINKPAD\Downloads\nfl.csv")
+#print(nfl_df.columns)
+nfl_df = nfl_df[nfl_df['year'] == 2018]
+nfl_df=nfl_df[["team","W","L","W-L%"]]
+nfl_df=nfl_df.rename(columns={"W-L%":"win_loss_ratio"})
+nfl_df['W'] = pd.to_numeric(nfl_df['W'], errors='coerce')
+nfl_df['L'] = pd.to_numeric(nfl_df['L'], errors='coerce')
+nfl_df['win_loss_ratio'] = pd.to_numeric(nfl_df['win_loss_ratio'], errors='coerce')
+
+print(nfl_df.head())
+
+metro_to_teams = {}
+for index,row in cities.iterrows():
+    metro_area=row['Metropolitan area']
+    teams=row['NFL']
+    teams = re.split(r',|\s(?=[A-Z])', str(row['NFL']))
+    # some cells have multiple teams
+    metro_to_teams[metro_area] = teams
+
+#print(metro_to_teams)
+
+###clean
+import re
+
+cleaned_dict = {}
+
+for city, teams in metro_to_teams.items():
+    cleaned_teams = []
+    for team in teams:
+        # remove bracketed notes like [note 13]
+        team = re.sub(r'\[.*?\]', '', team)
+        team = team.replace('—', '').strip()
+        if team:  # only add if non-empty after cleaning
+            cleaned_teams.append(team)
+    cleaned_dict[city] = cleaned_teams
+
+#print(cleaned_dict)
+
+population_by_region = []
+win_loss_by_region = []
+
+for city, teams in cleaned_dict.items():
+    # Skip cities without any teams
+    if not teams:
+        continue
+
+    # Find win/loss ratios for each team in that metro
+    ratios = []
+    for team in teams:
+        # check if any NHL team name is in nhl_df["team"]
+        mask = nfl_df['team'].str.contains(team, case=False, na=False)
+        city_teams = nfl_df[mask]
+        if not city_teams.empty:
+            ratios.extend(city_teams['win_loss_ratio'].tolist())
+
+    # Only proceed if we found valid ratios
+    if ratios:
+        avg_ratio = sum(ratios) / len(ratios)
+        win_loss_by_region.append(avg_ratio)
+
+        # Clean population (remove commas and convert to float)
+        pop = float(str(cities.loc[cities['Metropolitan area'] == city, 'Population'].values[0]).replace(',', ''))
+        population_by_region.append(pop)
+
+for city, teams in cleaned_dict.items():
+    found = False
+    for team in teams:
+        if nfl_df['team'].str.contains(team, case=False, na=False).any():
+            found = True
+    if not found and teams:
+        print("No match found for:", city, "→", teams)
+
+from scipy.stats import pearsonr
+print(pearsonr(population_by_region, win_loss_by_region))
+print(len(population_by_region), len(win_loss_by_region))
+
+####Final answer:
+##Q-4:
+import pandas as pd
+import numpy as np
+import scipy.stats as stats
+import re
+
+def nfl_correlation():
+    # --- Read city population data ---
+    cities = pd.read_html(r"C:\Users\THINKPAD\Downloads\wikipedia_data.html")[1]
+    cities = cities.iloc[:-1,[0,3,5,6,7,8]]
+    cities.columns = ['Metropolitan area', 'Population', 'NFL', 'MLB', 'NBA', 'NHL']
+
+    # --- Read NFL data for 2018 ---
+    nfl_df = pd.read_csv(r"C:\Users\THINKPAD\Downloads\nfl.csv")
+    nfl_df = nfl_df[nfl_df['year'] == 2018]
+    nfl_df = nfl_df[["team","W","L","W-L%"]]
+    nfl_df = nfl_df.rename(columns={"W-L%":"win_loss_ratio"})
+    nfl_df['W'] = pd.to_numeric(nfl_df['W'], errors='coerce')
+    nfl_df['L'] = pd.to_numeric(nfl_df['L'], errors='coerce')
+    nfl_df['win_loss_ratio'] = pd.to_numeric(nfl_df['win_loss_ratio'], errors='coerce')
+
+    # --- Map metro areas to teams ---
+    metro_to_teams = {}
+    for index,row in cities.iterrows():
+        metro_area = row['Metropolitan area']
+        teams = re.split(r',|\s(?=[A-Z])', str(row['NFL']))
+        metro_to_teams[metro_area] = teams
+
+    # --- Clean team names ---
+    cleaned_dict = {}
+    for city, teams in metro_to_teams.items():
+        cleaned_teams = []
+        for team in teams:
+            team = re.sub(r'\[.*?\]', '', team)
+            team = team.replace('—', '').strip()
+            if team:
+                cleaned_teams.append(team)
+        cleaned_dict[city] = cleaned_teams
+
+    # --- Compute population and win/loss ratio lists ---
+    population_by_region = []
+    win_loss_by_region = []
+
+    for city, teams in cleaned_dict.items():
+        if not teams:
+            continue
+
+        ratios = []
+        for team in teams:
+            mask = nfl_df['team'].str.contains(team, case=False, na=False)
+            city_teams = nfl_df[mask]
+            if not city_teams.empty:
+                ratios.extend(city_teams['win_loss_ratio'].tolist())
+
+        if ratios:
+            avg_ratio = sum(ratios) / len(ratios)
+            win_loss_by_region.append(avg_ratio)
+
+            pop = float(str(cities.loc[cities['Metropolitan area'] == city, 'Population'].values[0]).replace(',', ''))
+            population_by_region.append(pop)
+
+    # Optional: print unmatched cities
+    for city, teams in cleaned_dict.items():
+        found = False
+        for team in teams:
+            if nfl_df['team'].str.contains(team, case=False, na=False).any():
+                found = True
+        if not found and teams:
+            print("No match found for:", city, "→", teams)
+
+    # --- Return Pearson correlation ---
+    assert len(population_by_region) == len(win_loss_by_region), "Q4: Your lists must be the same length"
+    assert len(population_by_region) == 29, "Q4: There should be 29 teams being analysed for NFL"
+    return stats.pearsonr(population_by_region, win_loss_by_region)
+
+print(nfl_correlation())
