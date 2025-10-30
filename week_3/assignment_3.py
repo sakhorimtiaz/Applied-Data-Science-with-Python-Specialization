@@ -236,8 +236,8 @@ def answer_twelve():
 ##Q-13:
 def answer_thirteen():
     Top15 = answer_one()
-    Top15['PopEst'] = Top15['Energy Supply'] / Top15['Energy Supply per Capita']
-    PopEst_str = Top15['PopEst'].apply(lambda x: f"{x:,.2f}")
-    return PopEst_str
+    Top15['PopEst'] = (Top15['Energy Supply'] / Top15['Energy Supply per Capita']).astype(float)
+    Top15['PopEst_str'] = Top15['PopEst'].map('{:,}'.format)
+    return Top15['PopEst_str']
 
 #print(answer_thirteen())
