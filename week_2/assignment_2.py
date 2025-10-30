@@ -13,8 +13,8 @@ def proportion_of_education():
     proportion = counts / total
     print(proportion)
 
-    result = {"Less than high school": proportion[1], "High school": proportion[2],
-              "More than high school but not college": proportion[3], "College degree": proportion[4]}
+    result = {"less than high school": proportion[1], "high school": proportion[2],
+              "more than high school but not college": proportion[3], "college": proportion[4]}
     return result
 
 #Question-2
